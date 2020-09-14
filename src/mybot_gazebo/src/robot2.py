@@ -64,8 +64,8 @@ class turtlebot_move():
         self.theta = 0.0
         self.pid_theta = PID(0,0,0)  # initialization
 
-        self.odom_sub = rospy.Subscriber("robot1/odom", Odometry, self.odom_callback)
-        self.vel_pub = rospy.Publisher('robot1/cmd_vel', Twist, queue_size=10)
+        self.odom_sub = rospy.Subscriber("robot2/odom", Odometry, self.odom_callback)
+        self.vel_pub = rospy.Publisher('robot2/cmd_vel', Twist, queue_size=10)
         self.vel = Twist()
         self.rate = rospy.Rate(10)
         self.counter = 0
@@ -164,14 +164,14 @@ if __name__ == '__main__':
 	rospy.init_node('turtlebot_move', anonymous=False)
 	i = 1
 	#mark stage
-	stage_pub = rospy.Publisher('robot1/stage', Int32, queue_size=10)
+	stage_pub = rospy.Publisher('robot2/stage', Int32, queue_size=10)
 	stage = Int32()
 	stage.data = 1
 	stage_pub.publish(stage)
 	rate = rospy.Rate(100)
 	rate.sleep()
 	#mark position
-	current= rospy.wait_for_message('robot1/odom', Odometry)
+	current= rospy.wait_for_message('robot2/odom', Odometry)
 	current_x = current.pose.pose.position.x 
 	current_y = current.pose.pose.position.y
 	while i < 6:
@@ -180,7 +180,7 @@ if __name__ == '__main__':
 		stage_pub.publish(stage)
 		rate = rospy.Rate(100)
 
-		msg= rospy.wait_for_message('robot1/goal', Odometry)
+		msg= rospy.wait_for_message('robot2/goal', Odometry)
 		if i == int(msg.pose.pose.position.z):
 			i += 1
 			goalX = msg.pose.pose.position.x 
@@ -189,7 +189,7 @@ if __name__ == '__main__':
 			rospy.loginfo("WAYPOINTS: x=" + str(goalX) + ";  goalY=" + str(goalX))
 			turtlebot_move(current_x,current_y)
 			rospy.sleep(1)
-		current= rospy.wait_for_message('robot1/odom', Odometry)
+		current= rospy.wait_for_message('/odom', Odometry)
 		current_x = current.pose.pose.position.x 
 		current_y = current.pose.pose.position.y
 

@@ -93,14 +93,20 @@ while 1
         end
     end
     
-    msg2 = rossubscriber('robot1/odom');
-    SIZE_MESSAGE = size(msg2.LatestMessage);
-    if SIZE_MESSAGE(1) == 0
+    msg_robot1 = rossubscriber('robot1/odom');
+    SIZE_MESSAGE1 = size(msg_robot1.LatestMessage);
+    msg_robot2 = rossubscriber('robot2/odom');
+    SIZE_MESSAGE2 = size(msg_robot2.LatestMessage);
+    if SIZE_MESSAGE1(1) == 0 || SIZE_MESSAGE2(1) == 0
         continue
     else
-        rx = msg2.LatestMessage.Pose.Pose.Position.X;
-        ry = msg2.LatestMessage.Pose.Pose.Position.Y;
-        if norm([rx,ry]-[Initial_Robot(1),Initial_Robot(2)]) <= 0.3
+        robot1_x = msg_robot1.LatestMessage.Pose.Pose.Position.X;
+        robot1_y = msg_robot1.LatestMessage.Pose.Pose.Position.Y;
+        
+        robot2_x = msg_robot2.LatestMessage.Pose.Pose.Position.X;
+        robot2_y = msg_robot2.LatestMessage.Pose.Pose.Position.Y;
+        
+        if norm([robot1_x,robot1_y]-[Initial_Robot(1),Initial_Robot(2)]) <= 0.3 && norm([robot2_x,robot2_y]-[Initial_Target(1),Initial_Target(2)])  <= 0.3
             break
         end
     end
