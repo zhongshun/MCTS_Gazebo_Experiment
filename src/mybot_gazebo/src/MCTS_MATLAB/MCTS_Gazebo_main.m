@@ -58,13 +58,13 @@ for step = 2:10
     
     robot1.Pose.Pose.Position.X = Robot1_Next(1);
     robot1.Pose.Pose.Position.Y = Robot1_Next(2);
-    robot1.Pose.Pose.Position.Z = 1;
+    robot1.Pose.Pose.Position.Z = step;
     send(pub_goal_robot1,robot1);
     Initial_Robot1 = Robot1_Next;
     
     robot2.Pose.Pose.Position.X = Robot2_Next(1);
     robot2.Pose.Pose.Position.Y = Robot2_Next(2);
-    robot2.Pose.Pose.Position.Z = 1;
+    robot2.Pose.Pose.Position.Z = step;
     send(pub_goal_robot2,robot2);
     Initial_Robot2 = Robot2_Next;
     
